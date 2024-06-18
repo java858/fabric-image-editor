@@ -75,13 +75,7 @@ const App = () => {
         });
         break;
       case "strange":
-        // shape = new fabric.Path(
-        //   "M 185.636 372.915 C 196.331 371.992 211.227 369.878 230.352 366.674 C 245.718 365.283 259.005 367.383 270.154 372.915 C 288.339 381.345 301.605 397.43 309.956 421.148 C 321.132 451.917 319.087 487.104 303.728 526.685 C 289.674 562.106 273.916 585.853 256.193 597.939 C 247.295 604.032 230.976 608.953 207.259 612.625 C 177.426 617.758 153.247 618.482 134.592 614.719 C 100.081 608.712 74.479 590.064 57.7 558.833 C 34.919 515.515 26.483 476.892 32.56 442.848 C 39.052 411.156 57.238 388.297 87.049 374.337 C 107.571 365.04 125.694 362.222 141.602 365.978 C 163.94 371.049 178.606 373.392 185.636 372.915 Z",
-        //   {
-        //     fill: "red",
-        //     selectable: true,
-        //   }
-        // );
+        // svg path generator
         shape = new fabric.Path(
           "M 4 8 L 10 1 L 13 0 L 12 3 L 5 9 C 6 10 6 11 7 10 C 7 11 8 12 7 12 A 1.42 1.42 0 0 1 6 13 A 5 5 0 0 0 4 10 Q 3.5 9.9 3.5 10.5 T 2 11.8 T 1.2 11 T 2.5 9.5 T 3 9 A 5 5 90 0 0 0 7 A 1.42 1.42 0 0 1 1 6 C 1 5 2 6 3 6 C 2 7 3 7 4 8 M 10 1 L 10 3 L 12 3 L 10.2 2.8 L 10 1",
           {
@@ -121,12 +115,12 @@ const App = () => {
     renderAll();
   }; // draw image onto canvas
 
-  const drawImage = (_img = img1, scaleX = 1, scaleY = 1) => {
+  const drawImage = (_img) => {
     fabric.Image.fromURL(_img, (img) => {
-      img.set({
-        scaleX,
-        scaleY,
-      });
+      // img.set({
+      //   scaleX,
+      //   scaleY,
+      // });
       img.setPositionByOrigin(
         new fabric.Point(cvsConfig.width / 2, cvsConfig.height / 2),
         "center",
@@ -144,6 +138,7 @@ const App = () => {
 
   const onImgFileChange = () => {
     const imgFile = fileInputRef.current?.files[0];
+    if (!imgFile) return;
     const reader = new FileReader();
     reader.readAsDataURL(imgFile);
     reader.onload = function (e) {
@@ -284,15 +279,15 @@ const App = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.controlBox}>
-        <div className={styles.category}>
+        <div className={styles.control}>
           <button onClick={clearCanvasContainer}>Clear</button>
           <button onClick={deleteActiveObj}>Delete Active</button>
         </div>
-        <div className={styles.category}>
+        <div className={styles.control}>
           <button onClick={undo}>Undo</button>
           <button onClick={redo}>Redo</button>
         </div>
-        <div className={styles.category}>
+        <div className={styles.control}>
           <button
             onClick={() => {
               drawShape();
@@ -316,7 +311,7 @@ const App = () => {
             Strange
           </button>
         </div>
-        <div className={styles.category}>
+        <div className={styles.control}>
           <input
             type="text"
             value={textInput}
@@ -340,23 +335,23 @@ const App = () => {
             Text cursive
           </button>
         </div>
-        {/* <div className={styles.category}>
+        <div className={styles.control}>
           <img
             src={img1}
             className={styles.imgBtn}
             onClick={() => {
-              drawImage(undefined, 0.2, 0.2);
+              drawImage(img1);
             }}
           />
           <img
             src={img2}
             className={styles.imgBtn}
             onClick={() => {
-              drawImage(img2, 0.2, 0.2);
+              drawImage(img2);
             }}
           />
-        </div> */}
-        <div className={styles.category}>
+        </div>
+        <div className={styles.control}>
           <button onClick={uploadImg}>Upload image</button>
           <form>
             <input ref={fileInputRef} type="file" onChange={onImgFileChange} />
@@ -368,7 +363,7 @@ const App = () => {
             />
           )}
         </div>
-        <div className={styles.category}>
+        <div className={styles.control}>
           <button onClick={switchFreeDraw}>
             Free Draw {isDrawingMode ? "ON" : "OFF"}
           </button>
@@ -385,7 +380,7 @@ const App = () => {
             onChange={(e) => handleLineWidthChange(Number(e.target.value))}
           />
         </div>
-        <div className={styles.category}>
+        <div className={styles.control}>
           <button onClick={save}>Save to PNG</button>
           <input
             type="text"
@@ -394,7 +389,7 @@ const App = () => {
             onChange={handleNameInputChange}
           />
         </div>
-        <div className={styles.category}>
+        <div className={styles.control}>
           <button onClick={saveWorkspace}>Save Workspace</button>
           <input
             type="text"
@@ -402,8 +397,9 @@ const App = () => {
             onChange={handleWsNameInputChange}
             placeholder="Input workspace name"
           />
+        </div>
+        <div className={styles.control}>
           <select value={selectedWsId} onChange={handleWsSelect}>
-            <option value={undefined} />
             {wsList.map((option) => (
               <option key={option.id} value={option.id}>
                 {option.name}
