@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
+import { fabric } from "fabric";
 import "./global.css";
 import styles from "./index.css";
-import { fabric } from "fabric";
 import img1 from "./images/img-1.png";
 import img2 from "./images/img-2.png";
 
@@ -57,6 +57,15 @@ const App = () => {
   const drawShape = (type = "rectangle") => {
     let shape = null;
     switch (type) {
+      case "rectangle":
+        shape = new fabric.Rect({
+          left: 300,
+          top: 50,
+          fill: "blue",
+          width: 100,
+          height: 100,
+        });
+        break;
       case "circle":
         shape = new fabric.Circle({
           left: 200,
@@ -86,13 +95,6 @@ const App = () => {
         shape.scaleToWidth(200);
         break;
       default:
-        shape = new fabric.Rect({
-          left: 300,
-          top: 50,
-          fill: "blue",
-          width: 100,
-          height: 100,
-        });
         break;
     }
 
@@ -213,7 +215,7 @@ const App = () => {
     }
   }; // save workspace to localStorage, simulate save to database
 
-  const saveWorkspace = () => {
+  const saveWs = () => {
     const id = Date.now(),
       ws = {
         id,
@@ -238,8 +240,9 @@ const App = () => {
   }; // restore workspace saved previously
 
   const retoreWorkspace = () => {
+    console.log(111, selectedWsId);
     if (!selectedWsId || !wsList.length)
-      return alert("no workspace is selected or stored!");
+      return alert("No workspace is selected!");
     const ws = wsList.find((e) => e.id === +selectedWsId);
     if (ws?.canvas) {
       canvas.loadFromJSON(ws.canvas);
@@ -390,7 +393,7 @@ const App = () => {
           />
         </div>
         <div className={styles.control}>
-          <button onClick={saveWorkspace}>Save Workspace</button>
+          <button onClick={saveWs}>Save Workspace</button>
           <input
             type="text"
             value={wsNameInput}

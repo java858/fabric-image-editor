@@ -35,10 +35,10 @@ button {
   margin-bottom: 1rem;
 }
 .controlBox .control .textImpact {
-  font-family: Impact, sans-serif;
+  font-family: Impact;
 }
 .controlBox .control .textCursive {
-  font-family: cursive, sans-serif;
+  font-family: cursive;
 }
 .controlBox .control .imgBtn {
   margin-right: 1rem;
@@ -47,7 +47,7 @@ button {
   border-radius: 0.5rem;
 }
 .controlBox .control .imgPreview {
-  height: 120px;
+  width: 60px;
 }
 .canvasBox {
   flex-shrink: 0;
